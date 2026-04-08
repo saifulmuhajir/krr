@@ -90,6 +90,7 @@ _View instructions for: [Seeing recommendations in a UI](#free-ui-for-krr-recomm
 - **Explainability**: [Understand how recommendations were calculated with explanation graphs](#free-krr-ui-on-robusta-saas)
 - **Extensible Strategies**: Easily create and use your own strategies for calculating resource recommendations.
 - **Free SaaS Platform**: See why KRR recommends what it does, by using the [free Robusta SaaS platform](https://platform.robusta.dev/signup/?benefits=krr&utm_source=github&utm_medium=krr-readme&utm_content=features-free-saas-platform).
+- **CloudNativePG (CNPG) Support**: Get resource recommendations for PostgreSQL clusters managed by [CloudNativePG](https://cloudnative-pg.io/).
 - **Future Support**: Upcoming versions will support custom resources (e.g. GPUs) and custom metrics.
 
 ### How Much Can I Expect to Save with KRR?
@@ -256,6 +257,7 @@ Setup KRR for...
 - [Coralogix Managed Prometheus](#coralogix-managed-prometheus)
 - [Grafana Cloud Managed Prometheus](#grafana-cloud-managed-prometheus)
 - [Grafana Mimir](#grafana-mimir-auto-discovery)
+- [CloudNativePG (CNPG) Clusters](#cloudnativepg-cnpg-clusters)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -647,6 +649,37 @@ For discovering Prometheus it scans services for those labels:
 ```python
   "app.kubernetes.io/name=mimir,app.kubernetes.io/component=query-frontend"
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+</details>
+
+<details id="cloudnativepg-cnpg-clusters">
+<summary>CloudNativePG (CNPG) Clusters</summary>
+
+KRR supports resource recommendations for PostgreSQL clusters managed by [CloudNativePG](https://cloudnative-pg.io/) (CNPG). CNPG clusters are automatically discovered — no extra configuration is needed if the CNPG operator is installed in your cluster.
+
+KRR scans `Cluster` custom resources (`postgresql.cnpg.io/v1`) and analyzes the `postgres` container within each cluster's pods.
+
+**Scan all resources including CNPG clusters (default):**
+
+```sh
+krr simple
+```
+
+**Scan only CNPG clusters:**
+
+```sh
+krr simple --resources CNPGCluster
+```
+
+**Scan a specific namespace:**
+
+```sh
+krr simple --resources CNPGCluster -n my-namespace
+```
+
+If the CNPG CRD is not present in the cluster, KRR will silently skip it and continue scanning other resource types.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
