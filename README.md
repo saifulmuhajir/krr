@@ -147,6 +147,35 @@ _Note: If one of last three metrics is absent KRR will still work, but it will o
 
 ### Installation Methods
 
+#### Linux AMD64 binary with CNPG support (this fork)
+
+Download `krr-linux-amd64` from [this fork's releases](https://github.com/saifulmuhajir/krr/releases).
+Run `chmod +x krr-linux-amd64`, then `./krr-linux-amd64 simple --resource CNPGCluster`.
+CI-built releases also include `SHA256SUMS`; download both files into the same
+directory and run `sha256sum --check SHA256SUMS` to verify the download.
+
+The **Build and Release** workflow builds on Debian Bookworm (glibc 2.36), runs
+the test suite, and checks the executable's version and CNPG CLI option in Ubuntu
+24.04 (Noble), 26.04, and 26.10 containers. These are startup checks; they do not
+connect to a Kubernetes cluster. Other Linux distributions and architectures are
+not covered by this workflow.
+
+To release a new version:
+
+1. Commit and push the code, including the workflow, to `main`.
+2. Create a GitHub release with a new tag, such as `v1.31.1-cnpg.2`, targeting that
+   commit, and publish it.
+3. Wait for **Build and Release** to pass. It attaches `krr-linux-amd64` and
+   `SHA256SUMS` only after all Ubuntu checks pass; existing assets are not replaced.
+
+To try the build first, open **Actions → Build and Release → Run workflow** and
+choose `main`. Manual runs provide the files as an Actions artifact and do not
+upload to a release. After downloading that artifact, check that the whole run
+passed, extract it, verify the checksum, and restore executable permission with
+`chmod +x krr-linux-amd64`. Existing releases are not rebuilt by pushing this
+workflow. No additional secrets are required; release uploads use the workflow's
+`GITHUB_TOKEN`.
+
 <details>
   <summary>Brew (Mac/Linux)</summary>
 

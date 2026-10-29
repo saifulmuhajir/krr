@@ -7,6 +7,8 @@ on:
 
 jobs:
   build:
+    # These registries and credentials belong to upstream, not forks.
+    if: github.repository == 'robusta-dev/krr'
 
     runs-on: ubuntu-latest
 
